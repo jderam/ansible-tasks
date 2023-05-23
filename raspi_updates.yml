@@ -1,0 +1,29 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Update apt cache and upgrade apt packages
+    apt:
+      update_cache: true
+      upgrade: dist
+      autoremove: true
+      autoclean: true
+
+- hosts: pyenv_hosts
+  gather_facts: false
+  tasks:
+  
+  - name: Update pyenv
+    command:
+      chdir: $HOME/.pyenv
+      cmd: git pull
+
+- hosts: rust_hosts
+  gather_facts: false
+  tasks:
+  
+  - name: Update rust
+    command:
+      cmd: $HOME/.cargo/bin/rustup update
